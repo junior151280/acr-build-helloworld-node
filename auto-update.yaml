@@ -1,0 +1,16 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: acr-scaler
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: myapp
+  triggers:
+  - type: azure-container-registry
+    metadata:
+      registryName: acrdemotasks
+      subscriptionId: cad9e0b6-be6e-4cb0-a4bc-3f81708540f9
+      resourceGroupName: rg-demo-acr
+      repository: helloacrtaskswin
+      tag: v2
