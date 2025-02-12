@@ -1,0 +1,24 @@
+name: Build and push image to ACR
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: acrdemotasks.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push image
+        run: |
+          docker build . -f Dockerfile-win -t acrdemotasks.azurecr.io/helloacrtaskswin:${{ github.run_id }}
+          docker push acrdemotasks.azurecr.io/helloacrtaskswin:${{ github.run_id }}
